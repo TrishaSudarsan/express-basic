@@ -4,34 +4,36 @@ router.get('/',(req,res)=>{
   res.send("Service Page")
 })
 
-router.get('/:id([0-9])',(req,res)=>{
+router.get('/:id',(req,res)=>{
 
-  if(req.params.id<=ServiceArrayLength){
-    res.send(`Service Name for this id ${service[req.params.id-1].idno} is ${service[req.params.id-1].name}`)
+  if(req.params.id<service.length){
+    res.send(req.services.name)
   }
   else{
-    res.send("Wrong id")
+    res.send("Service Not Found")
   }
-  // res.send(`List of Service ${req.params.id}`)
 })
+const service=[
+  {
+    id:0,
+    name:'App development'
+  },
+  {
+    id:1,
+    name:'Web development'
+  },
+  {
+    id:2,
+    name:'Iot development'
+  },
+  {
+    id:3,
+    name:'Embedded system'
 
-
-const service=[{
-  idno:1,
-  name:'mern'
-},
-{
-  idno:2,
-  name:'java'
-},
-{
-  idno:3,
-  name:'web development'
-},
-{
-  idno:4,
-  name:'express'
-}]
-
-const ServiceArrayLength=service.length;
+  }
+]
+router.param('id',(req,res,next,id)=>{
+  req.services=service[id];
+  next();
+})
 module.exports=router;
